@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+  </head>
+  <body>
+    <h1>Morning,</h1>
+      <q>There is now place like home</q>
+
+    
+      <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.0.8/stitch.js"></script>
+      <script>
+        const client = stitch.Stitch.initializeDefaultAppClient('monday-rbtpr');
+      
+        const db = client.getServiceClient(stitch.RemoteMongoClient.factory, 'mongodb-atlas').db('dbmonday');
+      
+        client.auth.loginWithCredential(new stitch.AnonymousCredential()).then(user => 
+          db.collection('trees').updateOne({owner_id: client.auth.user.id}, {$set:{number:42}}, {upsert:true})
+        ).then(() => 
+          db.collection('trees').find({owner_id: client.auth.user.id}, { limit: 100}).asArray()
+        ).then(docs => {
+            console.log("Found docs", docs)
+            console.log("[MongoDB Stitch] Connected to Stitch")
+            console.log("client");
+            //register("woutervantilburg@outlook.com", "aiewIJWn1!!");
+          
+          login("nos@live.nl", "aiewIJWn1!!");
+    
+            //confirm("1af7e649e61fb34f216a1ecef6295a20c55c3d126c04dab88942498f28560735c8896d1bbfb1710a86ed31b47668dc39d0ec201980452519845496ea7e56f7a2",
+            // "5bb9e0e557c70d7aebe202b8")); //van wouter
+
+
+         // confirm("2390206097fc6b3f62c74b36517480b13d3b2651b5b7295e69b333baeab68fd11d2e08562068c730214bf1d1d4d6547916e5b676a31578a9c2e3a00585b12753",
+         //    "5bb8991317639ec3f53cb517"); // van nos@live.nl
+        //login("nos@live.nl", "aiewIJWn1!!");
+
+        }).catch(err => {
+          console.error(err)
+        });
+
+
+
+function register(mail, psw){
+  console.log(client);
+            console.log("stitch");
+            console.log(stitch);
+            const emailPassClient = stitch.Stitch.defaultAppClient.auth
+                                    .getProviderClient(stitch.UserPasswordAuthProviderClient.factory);
+
+    emailPassClient.registerWithEmail(mail, psw)
+      .then(() => {
+        console.log("Successfully sent account confirmation email!");
+      })
+      .catch(err => {
+        console.log("Error registering new user:", err);
+      });
+      
+}
+
+function confirm(tokenparam,tokenIdparam){
+
+
+// Parse the URL query parameters
+const url = window.location.search;
+const params = new URLSearchParams(url);
+const token = tokenparam; //params.get('token');
+const tokenId = tokenIdparam;// params.get('tokenId');
+
+// Confirm the user's email/password account
+const emailPassClient = stitch.Stitch.defaultAppClient.auth
+  .getProviderClient(stitch.UserPasswordAuthProviderClient.factory);
+  console.log("emailpassclient");
+  console.log(emailPassClient);
+return emailPassClient.confirmUser(token, tokenId);
+
+}
+
+function login(e,p) {
+	//	e.preventDefault();
+
+		const credential = new UserPasswordCredential(e, p);
+
+		Stitch.defaultAppClient.auth.loginWithCredential(credential).then(authedId => {
+			console.log('successfully logged in with id: ${authedId}')
+			console.log(authedId);
+		}).catch(err => console.error('login failed with error: ${err}'));
+  }
+  
+function logint(e,p){
+
+  const credential = new stitch.Stitch.UserPasswordCredential(e, p);
+      Stitch.defaultAppClient.loginWithCredential(credential).then(authedId => {
+     console.log('successfully logged in with id: ${authedId}')
+  }).catch(err => console.error('login failed with error: ${err}'))
+
+}
+
+
+
+
+      </script>
+    <script>
+      require('./renderer.js')
+    </script>
+
+  </body>
+</html>

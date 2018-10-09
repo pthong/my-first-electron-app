@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+  </head>
+  <body>
+    
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '311382849444281',
+        cookie     : true,
+        xfbml      : true,
+        version    : '4.3' // search for api version!!
+      });
+        
+      FB.AppEvents.logPageView();   
+        
+    };
+  
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+
+
+     FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});
+
+  </script>
+
+  
+    <h1>Create User or login</h1>
+      <label for="username"><b>Username</b></label><br>
+      <input type="text" placeholder="Enter Username" name="username" required><br><br>
+      
+      <label for="password"><b>Password</b></label><br>
+      <input type="password" placeholder="Enter Password" name="password" required><br>
+      <button>create account</button>
+      
+
+    <script>
+      require('./renderer.js')
+    </script>
+
+
+
+</html>
